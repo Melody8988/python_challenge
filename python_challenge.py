@@ -1,5 +1,6 @@
 # vim: ts=4:sw=4:expandtabs
 
+
 __author__ = 'zach.mott@oppsource.com'
 __doc__ = """
 OppSource Python programming test v0.1.2 2018-05-30.
@@ -94,7 +95,6 @@ class SalesRep(object):
        
 class MarketSegment(object):
     def __init__(self, name, accounts=None):
-        # a marketSegment can be given a name and an iterable of accounts 
         self.name = name
         self._accounts = []
         # keeping _accounts as accounts name because this variable is local
@@ -113,12 +113,11 @@ class MarketSegment(object):
     def remove_account(self, account):
         self._accounts.remove(account)
         account.set_market_segments(None)
+        return self._accounts 
 
     def set_accounts(self, accounts):
         self._accounts = accounts
     # replacing accounts in the marketSegment class to be the current accounts array 
-
-
 
 
 class Account(object):
@@ -163,10 +162,7 @@ class Account(object):
         segment.set_accounts(None)
         # update accounts to have new segments by calling set_accounts
 
-        
-
-
-
+    
 
         # """
         # Q1-2. Implement this method, which takes an iterable of MarketSegments to
@@ -176,14 +172,18 @@ class Account(object):
         # """
         # raise NotImplementedError()
 
-acc1 = Account(name='acct1')
-acc2 = Account (name='acct2')
-acc3 = Account (name='acct3')
+acc1 = Account(name='acc1')
+acc2 = Account (name='acc2')
+acc3 = Account (name='acc3')
 
-rep_1=SalesRep('Leslie', 'Knope', [acc1, acc2, acc3])
+rep_1 = SalesRep('Leslie', 'Knope', [acc1, acc2, acc3])
+seg_1 = MarketSegment('Consumer Goods', [acc1, acc2])
+seg_2 = MarketSegment('Services', [acc3])
+seg_3 = MarketSegment('Advertising', [acc3])
 
-rep_1.remove_account(acc1)
-print (rep_1._accounts)
+# rep_1.remove_account(acc1)
+seg_1.add_account(acc2)
+print (seg_1._accounts)
 
 
 
