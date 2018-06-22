@@ -97,7 +97,6 @@ class MarketSegment(object):
     def __init__(self, name, accounts=None):
         self.name = name
         self._accounts = []
-        # keeping _accounts as accounts name because this variable is local
 
         if accounts:
             self._accounts.extend(accounts)
@@ -106,9 +105,14 @@ class MarketSegment(object):
         return "{self.name}".format(self=self)
 
     def add_account(self, account):
-        self._accounts.append(account)
-        account.set_market_segments(self)
-        return self._accounts 
+        if account in self._accounts:
+            # ^check if account is already in current segment array
+            raise ValueError ('Accounts cannot be assigned to the same Market Segment more than once.') 
+             
+        else:
+            self._accounts.append(account)
+            account.set_market_segments(self)
+            return self._accounts 
 
     def remove_account(self, account):
         self._accounts.remove(account)
@@ -151,9 +155,8 @@ class Account(object):
         if segment in self._segments:
             # ^check if segment is already in current array
             print('segment already exists')
-            # raise ValueError ('Accounts cannot be assigned to the same Market Segment more than once.')
-            # This Account is already assigned to %s') % (segment)
-            
+        
+        else:
             self._segments.append(segment)
             segment.set_accounts(self)
             # update accounts to have new segments by calling set_accounts
@@ -162,8 +165,6 @@ class Account(object):
         self._segments.remove(segment)
         segment.set_accounts(None)
         # update accounts to have new segments by calling set_accounts
-
-    
 
         # """
         # Q1-2. Implement this method, which takes an iterable of MarketSegments to
@@ -183,7 +184,10 @@ seg_2 = MarketSegment('Services', [acc3])
 seg_3 = MarketSegment('Advertising', [acc3])
 
 # rep_1.remove_account(acc1)
-seg_1.add_account(acc2)
+# acc1.add_segment('Consumer Goods')
+# print (acc1._sales_rep)
+
+seg_1.add_account(acc1)
 print (seg_1._accounts)
 
 
