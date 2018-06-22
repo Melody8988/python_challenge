@@ -150,9 +150,10 @@ class Account(object):
 
         if segment in self._segments:
             # ^check if segment is already in current array
-            raise ValueError ('Accounts cannot be assigned to the same Market Segment more than once. This Account is already assigned to %s') % (segment)
+            print('segment already exists')
+            # raise ValueError ('Accounts cannot be assigned to the same Market Segment more than once.')
+            # This Account is already assigned to %s') % (segment)
             
-        else: 
             self._segments.append(segment)
             segment.set_accounts(self)
             # update accounts to have new segments by calling set_accounts
