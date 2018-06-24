@@ -129,7 +129,7 @@ class Account(object):
     Models an account. Accounts know their name, the sales rep they're
     assigned to, and the market segments they're a part of.
     """
-    def __init__(self, name, sales_rep=None, segments=None):
+    def __init__(self, name, sales_rep, segments=None):
         self.name = name
         self._sales_rep = sales_rep
         self._segments = []
@@ -201,18 +201,26 @@ class Account(object):
 
 class ChildAccount(Account):
     
-    def __init__(self, name, sales_rep=None, segments=None, child_account_name=None):
-        super().__init__(self, name, sales_rep=None, segments=None)
-        # name of parent account is carried down
+    def __init__(self, child_account_name, name, sales_rep, segments=None):
+        super(ChildAccount, self).__init__(name, sales_rep, segments=None)
+
+        if segments:
+            self._segments.extend(segments)
+
+        # child accounts have their own names, name represents parent account
         self._child_account_name = child_account_name
+        
+    
+      
 
 # Dummy Data
 acc1 = Account('acc1', 'Leslie', ['Consumer Goods'])
 acc2 = Account ('acc2', 'Leslie', ['Consumer Goods'])
 acc3 = Account ('acc3', 'Leslie', ['Services', 'Advertising'])
 
-c_acc1  = ChildAccount (child_account_name='c_acc1')
+c_acc1  = ChildAccount ('c_acc1', 'acc2', 'Leslie should be here', ['SHould be consumer goods'])
 
+print(c_acc1)
 rep_1 = SalesRep('Leslie', 'Knope', [acc1, acc2, acc3])
 
 seg_1 = MarketSegment('Consumer Goods', [acc1, acc2])
@@ -227,7 +235,7 @@ seg_3 = MarketSegment('Advertising', [acc3])
 # seg_1.add_account(acc1)
 # print (seg_1._accounts)
 
-print(c_acc1._sales_rep)
+# print(c_acc1._sales_rep)
         
 
 # +----------------------------------------------------------------------------+
